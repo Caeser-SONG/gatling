@@ -14,10 +14,10 @@ type HttpClient struct {
 	method string
 	url    string
 	data   map[string]interface{}
-	header map[string][]string
+	header map[string]string
 }
 
-func NewHttpClient(method string, url string, data map[string]interface{}, header map[string][]string) *HttpClient {
+func NewHttpClient(method string, url string, data map[string]interface{}, header map[string]string) *HttpClient {
 	return &HttpClient{
 		method: method,
 		url:    url,
@@ -47,6 +47,7 @@ func (h *HttpClient) Send() error {
 	if err != nil {
 		return err
 	}
+	fmt.Println(resp)
 	//	var data interface{}
 
 	//json.Unmarshal(body, &data)
