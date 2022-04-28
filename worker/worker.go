@@ -1,5 +1,5 @@
 package worker
-0;95;0c
+
 import (
 	"gatling/client"
 )
@@ -18,7 +18,6 @@ type HttpWorker struct {
 
 func NewHttpWorker(method, url string, data map[string]interface{}, header map[string]string) *HttpWorker {
 
-	
 	return &HttpWorker{
 		header: header,
 		url:    url,
