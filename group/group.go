@@ -16,15 +16,17 @@ type Group struct {
 	proto   string
 }
 
-func NewGroup(method, url, proto string, Qps int32, header map[string]string, data map[string]interface{}) *Group {
+func NewGroup(proto string, Qps int32, input worker.HttpInput) *Group {
 	workers := make([]worker.Worker, 0)
+
+	m := monitor.NewMonitor()
 	if proto == "http" {
 		for i := 0; i < start; i++ {
-			newworker := worker.NewHttpWorker(method, url, data, header)
-
+			newworker := worker.NewHttpWorker(input, m)
 			workers = append(workers, newworker)
 		}
 	}
+
 	return &Group{
 		Workers: workers,
 		Qps:     Qps,

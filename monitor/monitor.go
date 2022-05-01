@@ -8,8 +8,8 @@ import (
 
 // 嵌入 worker
 type Monitor struct {
-	count int32
-	time  float32
+	Count int32
+	Time  float32
 }
 
 func NewMonitor() *Monitor {
@@ -18,8 +18,8 @@ func NewMonitor() *Monitor {
 
 func (m *Monitor) Watch() {
 	for range time.Tick(time.Second) {
-		fmt.Printf("count =  %d \n", atomic.LoadInt32(&m.count))
+		fmt.Printf("count =  %d \n", atomic.LoadInt32(&m.Count))
 
-		atomic.StoreInt32(&m.count, 0)
+		atomic.StoreInt32(&m.Count, 0)
 	}
 }
