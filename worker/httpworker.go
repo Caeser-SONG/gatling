@@ -1,13 +1,15 @@
 package worker
 
 import (
+	"fmt"
 	"gatling/client"
 	"gatling/monitor"
 	"sync/atomic"
+	"time"
 )
 
 type HttpWorker struct {
-	input   HttpInput
+	input   *HttpInput
 	cancel  chan struct{}
 	client  *client.HttpClient
 	monitor *monitor.Monitor
@@ -20,7 +22,7 @@ type HttpInput struct {
 	Data   map[string]interface{}
 }
 
-func NewHttpWorker(input HttpInput, monitor *monitor.Monitor) *HttpWorker {
+func NewHttpWorker(input *HttpInput, monitor *monitor.Monitor) *HttpWorker {
 	return &HttpWorker{
 		input:   input,
 		monitor: monitor,
@@ -36,16 +38,25 @@ func (w *HttpWorker) Cancel() {
 
 // go  run this function
 func (w *HttpWorker) Run() {
+
 	for {
+
 		select {
 		case <-w.cancel:
+
 			return
 		default:
+			start := time.Now()
 			err := w.client.Send()
-			if err != nil {
+			cost := time.Since(start)
 
+			if err != nil {
+				fmt.Println("request error")
 			} else {
+				// 计数
 				atomic.AddInt32(&w.monitor.Count, 1)
+				// 时间
+				atomic.AddInt64(&w.monitor.Time, cost.Milliseconds())
 			}
 		}
 

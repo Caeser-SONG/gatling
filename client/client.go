@@ -2,7 +2,6 @@ package client
 
 import (
 	"fmt"
-	"io/ioutil"
 	"net/http"
 )
 
@@ -36,21 +35,21 @@ func (h *HttpClient) Send() error {
 	if err != nil {
 		return err
 	}
-	fmt.Println(resp.ContentLength)
+	//fmt.Println(resp.ContentLength)
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
 		return fmt.Errorf("request status is not 200")
 	}
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return err
-	}
-	fmt.Println(resp)
+	///body, err := ioutil.ReadAll(resp.Body)
+	//if err != nil {
+	//		return err
+	//}
+	//fmt.Println(resp)
 	//	var data interface{}
 
 	//json.Unmarshal(body, &data)
-	fmt.Println(string(body))
+	//fmt.Println(string(body))
 	return nil
 }
