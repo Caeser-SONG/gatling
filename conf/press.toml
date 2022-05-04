@@ -1,0 +1,9 @@
+[suit]
+	[[suit.group]]
+	url = "http://www.baidu.com"
+	header = ""
+	data = ""
+	[[suit.group]]
+	url = "http://www.huawei.com"
+
+	
