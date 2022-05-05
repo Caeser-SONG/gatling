@@ -39,15 +39,17 @@ func (h *HttpClient) Send() error {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
+		fmt.Println(resp.StatusCode)
 		return fmt.Errorf("request status is not 200")
 	}
+	// todo:是否加内容判断
 
-	///body, err := ioutil.ReadAll(resp.Body)
+	//body, err := ioutil.ReadAll(resp.Body)
 	//if err != nil {
-	//		return err
-	//}
+	//	return err
+	//	}
 	//fmt.Println(resp)
-	//	var data interface{}
+	//var data interface{}
 
 	//json.Unmarshal(body, &data)
 	//fmt.Println(string(body))

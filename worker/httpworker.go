@@ -51,7 +51,7 @@ func (w *HttpWorker) Run() {
 			cost := time.Since(start)
 
 			if err != nil {
-				fmt.Println("request error")
+				fmt.Println(err)
 			} else {
 				// 计数
 				atomic.AddInt32(&w.monitor.Count, 1)
