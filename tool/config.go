@@ -1,6 +1,7 @@
 package tool
 
 import (
+	"fmt"
 	"path/filepath"
 	"sync"
 
@@ -9,11 +10,15 @@ import (
 
 var (
 	one  sync.Once
-	conf *Suit
+	conf Conf
 )
 
+type Conf struct {
+	Suit Suit
+}
+
 type Suit struct {
-	groups []Group
+	Groups []Group `toml:"group"`
 }
 
 type Group struct {
@@ -22,16 +27,18 @@ type Group struct {
 	Header string `toml:"header"`
 }
 
-func Config() *Suit {
+func Config() *Conf {
+	//conf = new(Suit)
 	one.Do(func() {
-		filepath, err := filepath.Abs("./press.toml")
+		filepath, err := filepath.Abs("../conf/press.toml")
+		fmt.Println(filepath)
 		if err != nil {
 			panic(err)
 
 		}
-		if _, err := toml.DecodeFile(filepath, conf); err != nil {
+		if _, err := toml.DecodeFile(filepath, &conf); err != nil {
 			panic(err)
 		}
 	})
-	return conf
+	return &conf
 }
