@@ -22,6 +22,7 @@ type Suit struct {
 }
 
 type Group struct {
+	Method string `toml:"method"`
 	Url    string `toml:"url"`
 	Data   string `toml:"data"`
 	Header string `toml:"header"`
@@ -30,6 +31,7 @@ type Group struct {
 func Config() *Conf {
 	//conf = new(Suit)
 	one.Do(func() {
+
 		filepath, err := filepath.Abs("../conf/press.toml")
 		fmt.Println(filepath)
 		if err != nil {

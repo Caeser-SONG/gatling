@@ -12,7 +12,7 @@ func TestGroup(t *testing.T) {
 	runtime.GOMAXPROCS(4)
 	input := &worker.HttpInput{
 		Method: "GET",
-		Url:    "http://www.huawei.com",
+		Url:    "http://www.baidu.com",
 		Header: nil,
 		Data:   nil,
 	}

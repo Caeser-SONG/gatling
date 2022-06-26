@@ -1,9 +1,11 @@
 [suit]
 	[[suit.group]]
+	method = "get"
 	url = "http://www.baidu.com"
-	header = ""
-	data = ""
+	header = "11111"
+	data = "aaaaaa"
 	[[suit.group]]
+	method = "get"
 	url = "http://www.huawei.com"
 
 	

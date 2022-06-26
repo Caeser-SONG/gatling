@@ -6,12 +6,15 @@ import (
 	"gatling/monitor"
 	"sync/atomic"
 	"time"
+
+	"golang.org/x/time/rate"
 )
 
 type HttpWorker struct {
 	input   *HttpInput
 	cancel  chan struct{}
 	client  *client.HttpClient
+	limiter *rate.Limiter
 	monitor *monitor.Monitor
 }
 
@@ -22,11 +25,12 @@ type HttpInput struct {
 	Data   map[string]interface{}
 }
 
-func NewHttpWorker(input *HttpInput, monitor *monitor.Monitor) *HttpWorker {
+func NewHttpWorker(input *HttpInput, monitor *monitor.Monitor, limiter *rate.Limiter) *HttpWorker {
 	return &HttpWorker{
 		input:   input,
 		monitor: monitor,
 		cancel:  make(chan struct{}),
+		limiter: limiter,
 		client:  client.NewHttpClient(input.Method, input.Url, input.Data, input.Header),
 	}
 }
@@ -38,28 +42,37 @@ func (w *HttpWorker) Cancel() {
 
 // go  run this function
 func (w *HttpWorker) Run() {
+	if w.limiter != nil {
+		for {
 
-	for {
+			select {
+			case <-w.cancel:
 
-		select {
-		case <-w.cancel:
+				return
+			default:
+				start := time.Now()
+				err := w.client.Send()
+				cost := time.Since(start)
 
-			return
-		default:
-			start := time.Now()
+				if err != nil {
+					fmt.Println(err)
+					fmt.Println(cost)
+				} else {
+					// 计数
+					atomic.AddInt32(&w.monitor.Count, 1)
+					// 时间
+				}
+			}
+
+		}
+	} else {
+		if w.limiter.Allow() {
 			err := w.client.Send()
-			cost := time.Since(start)
-
 			if err != nil {
 				fmt.Println(err)
-			} else {
-				// 计数
-				atomic.AddInt32(&w.monitor.Count, 1)
-				// 时间
-				atomic.AddInt64(&w.monitor.Time, cost.Milliseconds())
 			}
+			atomic.AddInt32(&w.monitor.Count, 1)
 		}
-
 	}
 }
 
