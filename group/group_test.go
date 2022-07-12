@@ -1,15 +1,12 @@
 package group
 
 import (
-	"fmt"
 	"gatling/worker"
-	"runtime"
 	"testing"
 )
 
 func TestGroup(t *testing.T) {
-	fmt.Println(runtime.NumCPU())
-	runtime.GOMAXPROCS(4)
+
 	input := &worker.HttpInput{
 		Method: "GET",
 		Url:    "http://www.baidu.com",

@@ -72,6 +72,8 @@ func (w *HttpWorker) Run() {
 				fmt.Println(err)
 			}
 			atomic.AddInt32(&w.monitor.Count, 1)
+		} else {
+			fmt.Println("duoyuqingqiu")
 		}
 	}
 }

@@ -10,3 +10,11 @@ func TestSend(t *testing.T) {
 	e := h.Send()
 	fmt.Println(e)
 }
+
+func BenchmarkSend(b *testing.B) {
+	h := NewHttpClient("Get", "https://baidu.com", nil, nil)
+	for i := 0; i < b.N; i++ {
+		h.Send()
+	}
+
+}
