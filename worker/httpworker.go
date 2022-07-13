@@ -13,7 +13,7 @@ import (
 type HttpWorker struct {
 	input   *HttpInput
 	cancel  chan struct{}
-	client  *client.HttpClient
+	client  client.Client
 	limiter *rate.Limiter
 	monitor *monitor.Monitor
 }
@@ -42,7 +42,8 @@ func (w *HttpWorker) Cancel() {
 
 // go  run this function
 func (w *HttpWorker) Run() {
-	if w.limiter != nil {
+	if w.limiter == nil {
+
 		for {
 
 			select {
@@ -66,14 +67,15 @@ func (w *HttpWorker) Run() {
 
 		}
 	} else {
-		if w.limiter.Allow() {
-			err := w.client.Send()
-			if err != nil {
-				fmt.Println(err)
+
+		for {
+			if w.limiter.Allow() {
+				err := w.client.Send()
+				if err != nil {
+					fmt.Println(err)
+				}
+				atomic.AddInt32(&w.monitor.Count, 1)
 			}
-			atomic.AddInt32(&w.monitor.Count, 1)
-		} else {
-			fmt.Println("duoyuqingqiu")
 		}
 	}
 }

@@ -8,6 +8,8 @@ import (
 )
 
 func TestLimitworker(t *testing.T) {
+	input := HttpInput{}
+
 	NewHttpWorker(input*worker.HttpInput, monitor*monitor.Monitor, limiter*rate.Limiter)
 
 }

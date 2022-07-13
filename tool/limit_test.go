@@ -6,7 +6,7 @@ import (
 )
 
 func TestLimit(t *testing.T) {
-	l := NewLimiter(10)
+	l := NewLimiter(1)
 	var count int
 	for i := 0; i < 120; i++ {
 		if l.Allow() {

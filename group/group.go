@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"gatling/monitor"
 	"gatling/worker"
+
+	"golang.org/x/time/rate"
 )
 
 const (
@@ -17,15 +19,14 @@ type Group struct {
 	proto   string
 }
 
-func NewGroup(proto string, Qps int32, input *worker.HttpInput) *Group {
+func NewGroup(proto string, Qps int32, input *worker.HttpInput, limit *rate.Limiter) *Group {
 	workers := make([]worker.Worker, 0)
 
 	m := monitor.NewMonitor(input.Url)
 	if proto == "http" {
 
 		for i := 0; i < start; i++ {
-
-			newworker := worker.NewHttpWorker(input, m)
+			newworker := worker.NewHttpWorker(input, m, limit)
 			workers = append(workers, newworker)
 		}
 	}
