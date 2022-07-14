@@ -1,15 +1,15 @@
 package worker
 
 import (
-	"gatling/monitor"
+	"fmt"
 	"testing"
-
-	"golang.org/x/time/rate"
 )
 
-func TestLimitworker(t *testing.T) {
+func TestCheckInput(t *testing.T) {
 	input := HttpInput{}
-
-	NewHttpWorker(input*worker.HttpInput, monitor*monitor.Monitor, limiter*rate.Limiter)
-
+	a := CheckHttpInput(input)
+	if !a {
+		fmt.Println("no")
+		t.Fail()
+	}
 }

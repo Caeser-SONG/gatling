@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gatling/client"
 	"gatling/monitor"
+	"reflect"
 	"sync/atomic"
 	"time"
 
@@ -80,7 +81,15 @@ func (w *HttpWorker) Run() {
 	}
 }
 
-func (w *HttpWorker) CheckInput(input interface{}) bool {
+func CheckHttpInput(input interface{}) bool {
+	t := reflect.TypeOf(input)
+	n := t.Name()
+	fmt.Println(n)
+	//	if n == "HttpInput" {
+	//	return true
+	//	}
+	//	return false
+
 	if _, ok := input.(HttpInput); ok {
 		return true
 	}
