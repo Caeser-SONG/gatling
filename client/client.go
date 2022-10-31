@@ -9,6 +9,8 @@ type Client interface {
 	Send() error
 }
 
+type FailedReqFunc func() bool
+
 type HttpClient struct {
 	method string
 	url    string
@@ -32,12 +34,16 @@ func (h *HttpClient) Send() error {
 	}
 
 	resp, err := http.DefaultClient.Do(req)
+	//fmt.Println(resp.ContentLength)
+	// 判断err放后面
+	//	没有这个 当resp重定向错误时 resp 不为nil
+	if resp != nil {
+		defer resp.Body.Close()
+	}
+
 	if err != nil {
 		return err
 	}
-	//fmt.Println(resp.ContentLength)
-	defer resp.Body.Close()
-
 	if resp.StatusCode != 200 {
 		fmt.Println(resp.StatusCode)
 		return fmt.Errorf("request status is not 200")
@@ -48,8 +54,6 @@ func (h *HttpClient) Send() error {
 	//if err != nil {
 	//	return err
 	//	}
-	//fmt.Println(resp)
-	//var data interface{}
 
 	//json.Unmarshal(body, &data)
 	//fmt.Println(string(body))

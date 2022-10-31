@@ -21,10 +21,10 @@ type Group struct {
 
 func NewGroup(proto string, Qps int32, input *worker.HttpInput, limit *rate.Limiter) *Group {
 
-	//	if !worker.CheckHttpInput(input) {
-	//	fmt.Println("input is wrong")
-	//	return nil
-	//}
+	if !worker.CheckHttpInput(input) {
+		fmt.Println("input is wrong")
+		return nil
+	}
 	workers := make([]worker.Worker, 0)
 
 	m := monitor.NewMonitor(input.Url)

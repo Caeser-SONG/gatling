@@ -90,7 +90,7 @@ func CheckHttpInput(input interface{}) bool {
 	//	}
 	//	return false
 
-	if _, ok := input.(HttpInput); ok {
+	if _, ok := input.(*HttpInput); ok {
 		return true
 	}
 	return false

@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestGroup(t *testing.T) {
+func aestLimitGroup(t *testing.T) {
 	l := tool.NewLimiter(10)
 	input := &worker.HttpInput{
 		Method: "GET",
@@ -18,5 +18,18 @@ func TestGroup(t *testing.T) {
 	g := NewGroup("http", 10, input, l)
 	g.StartWork()
 
+	<-ch
+}
+
+func TestNoLimit(t *testing.T) {
+	input := &worker.HttpInput{
+		Method: "GET",
+		Url:    "http://www.baidu.com",
+	}
+
+	var ch chan struct{}
+
+	g := NewGroup("http", 100, input, nil)
+	g.StartWork()
 	<-ch
 }

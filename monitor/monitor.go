@@ -9,10 +9,12 @@ import (
 
 // 嵌入 worker
 type Monitor struct {
-	Count int32
-	Time  int64
-	Path  string
-	mu    sync.Mutex
+	SumReq    int64
+	ToaleTime int64
+	Count     int32
+	Time      int64
+	Path      string
+	mu        sync.Mutex
 }
 
 func NewMonitor(path string) *Monitor {
@@ -20,7 +22,6 @@ func NewMonitor(path string) *Monitor {
 		Path: path,
 	}
 }
-
 func (m *Monitor) Watch() {
 	for range time.Tick(time.Second) {
 		//m.mu.Lock()
