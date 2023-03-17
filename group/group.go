@@ -15,11 +15,11 @@ const (
 type Group struct {
 	Workers []worker.Worker
 	Monitor *monitor.Monitor
-	Qps     int32
+	Qps     int
 	proto   string
 }
 
-func NewGroup(proto string, Qps int32, input *worker.HttpInput, limit *rate.Limiter) *Group {
+func NewGroup(proto string, Qps int, input *worker.HttpInput, limit *rate.Limiter) *Group {
 
 	if !worker.CheckHttpInput(input) {
 		fmt.Println("input is wrong")

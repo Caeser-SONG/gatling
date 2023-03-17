@@ -53,7 +53,7 @@ func (w *HttpWorker) Run() {
 				return
 			default:
 				start := time.Now()
-				err := w.client.Send()
+				_, err := w.client.Send()
 				cost := time.Since(start)
 
 				if err != nil {
@@ -71,7 +71,7 @@ func (w *HttpWorker) Run() {
 
 		for {
 			if w.limiter.Allow() {
-				err := w.client.Send()
+				_, err := w.client.Send()
 				if err != nil {
 					fmt.Println(err)
 				}
